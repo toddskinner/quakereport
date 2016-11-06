@@ -4,31 +4,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
-    android:minHeight="@dimen/list_item_height">
+    android:padding="16dp">
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginLeft="20dp"
-        android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="@android:color/darker_gray"
         android:id="@+id/magnitude"/>
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="@android:color/darker_gray"
-        android:id="@+id/location"/>
+        android:id="@+id/locationOffset"/>
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="@android:color/darker_gray"
+        android:id="@+id/primaryLocation"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:id="@+id/date"/>
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
 
 </LinearLayout>
