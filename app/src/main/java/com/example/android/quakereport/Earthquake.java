@@ -13,11 +13,13 @@ public class Earthquake {
     private String mLocation;
     private double mMagnitude;
     private Long mDate;
+    private String mUrl;
 
-    public Earthquake (double magnitude, String location, Long date){
+    public Earthquake (double magnitude, String location, Long date, String url){
         mLocation = location;
         mDate = date;
         mMagnitude = magnitude;
+        mUrl = url;
     }
 
     public String getLocation(){
@@ -30,5 +32,9 @@ public class Earthquake {
 
     public Long getDate(){
         return mDate;
+    }
+
+    public String getUrl(){
+        return mUrl;
     }
 }

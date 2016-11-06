@@ -2,11 +2,15 @@ package com.example.android.quakereport;
 
 import android.app.Activity;
 import android.app.LauncherActivity;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.graphics.drawable.GradientDrawable;
 import java.text.DecimalFormat;
@@ -25,6 +29,8 @@ import static com.example.android.quakereport.R.id.time;
 
 public class EarthquakeListAdapter extends ArrayAdapter<Earthquake> {
 
+    private Context mCon;
+
     public EarthquakeListAdapter(Activity context, ArrayList<Earthquake> earthquakes){
         super(context, 0, earthquakes);
     }
@@ -36,7 +42,7 @@ public class EarthquakeListAdapter extends ArrayAdapter<Earthquake> {
                     R.layout.earthquake, parent, false);
         }
 
-        Earthquake currentEarthquake = getItem(position);
+        final Earthquake currentEarthquake = getItem(position);
 
         TextView magnitudeTextView = (TextView) convertView.findViewById(R.id.magnitude);
         magnitudeTextView.setText(String.valueOf(formatMagnitude(currentEarthquake.getMagnitude())));
