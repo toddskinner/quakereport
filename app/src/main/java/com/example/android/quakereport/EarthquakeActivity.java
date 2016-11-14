@@ -15,7 +15,10 @@
  */
 package com.example.android.quakereport;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -49,6 +52,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
     private EarthquakeListAdapter adapter;
     private TextView emptyTextView;
+    private TextView noConnectionTextView;
     private ProgressBar progressBar;
 
     /** URL for earthquake data from the USGS dataset */
@@ -67,19 +71,31 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        // Get a reference to the LoaderManager, in order to interact with loaders.
-        LoaderManager loaderManager = getLoaderManager();
-
-        // Initialize the loader. Pass in the int ID constant defined above and pass in null for
-        // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
-        // because this activity implements the LoaderCallbacks interface).
-        loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
-        //Log.e("loginit","Run initLoader");
-
         ListView listView = (ListView) findViewById(R.id.list);
         emptyTextView = (TextView) findViewById(R.id.empty_list);
         listView.setEmptyView(emptyTextView);
         progressBar = (ProgressBar) findViewById(R.id.loading_indicator);
+
+        // Get a reference to the ConnectivityManager to check state of network connectivity
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        //Get details on the currently active default data network
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        //if there is a network connection, fetch data
+        if(networkInfo != null && networkInfo.isConnected()){
+            //get a reference to the LoaderManager, in order to interact with loaders
+            LoaderManager loaderManager = getLoaderManager();
+            // Initialize the loader. Pass in the int ID constant defined above and pass in null for
+            // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
+            // because this activity implements the LoaderCallbacks interface).
+            loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
+        } else {
+            // Otherwise, display error
+            // First, hide loading indicator so error message will be visible
+            progressBar.setVisibility(View.GONE);
+            emptyTextView.setText(R.string.no_connection_message);
+        }
 
         adapter = new EarthquakeListAdapter(this, new ArrayList<Earthquake>());
 
