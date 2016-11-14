@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Loader;
+import android.util.Log;
 
 /**
  * Created by toddskinner on 11/10/16.
@@ -28,6 +29,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
     //we override the onStartLoading() method to call forceLoad() which is a required step to actually trigger the loadInBackground() method to execute.
     @Override
     protected void onStartLoading() {
+        //Log.e("onstart","Run onStartLoader");
         forceLoad();
     }
 
@@ -39,6 +41,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
         if (mUrl == null) {
             return null;
         }
+        //Log.e("onloadbackground","Run onLoadInBackground");
         return QueryUtils.fetchEarthquakeData(mUrl);
     }
 }

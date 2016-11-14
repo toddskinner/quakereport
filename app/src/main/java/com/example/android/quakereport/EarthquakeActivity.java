@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -47,6 +48,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
     private EarthquakeListAdapter adapter;
+    private TextView emptyTextView;
+    private ProgressBar progressBar;
 
     /** URL for earthquake data from the USGS dataset */
     private static final String USGS_REQUEST_URL =
@@ -71,8 +74,12 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
         // because this activity implements the LoaderCallbacks interface).
         loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
+        //Log.e("loginit","Run initLoader");
 
         ListView listView = (ListView) findViewById(R.id.list);
+        emptyTextView = (TextView) findViewById(R.id.empty_list);
+        listView.setEmptyView(emptyTextView);
+        progressBar = (ProgressBar) findViewById(R.id.loading_indicator);
 
         adapter = new EarthquakeListAdapter(this, new ArrayList<Earthquake>());
 
@@ -98,19 +105,25 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public Loader<List<Earthquake>> onCreateLoader(int id, Bundle args) {
+        //Log.e("oncreate","Run onCreateLoader");
         return new EarthquakeLoader(this, USGS_REQUEST_URL);
     }
 
     @Override
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> data) {
         adapter.clear();
+        progressBar.setVisibility(View.GONE);
+
         if (data != null && !data.isEmpty()) {
             adapter.addAll(data);
+            Log.e("onloadfinished","Run onLoadFinished");
         }
+        emptyTextView.setText(R.string.empty_list);
     }
 
     @Override
     public void onLoaderReset(Loader<List<Earthquake>> loader) {
         adapter.clear();
+        //Log.e("onreset","Run onResetLoader");
     }
 }
